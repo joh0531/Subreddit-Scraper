@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="SubredditScraper">
+    <head>
+        <title>Subreddit Scraper</title>
+        <base href="/">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="UTF-8">
+        <!-- bootstrap -->
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" /> -->
+        <!-- angularjs -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script> -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-resource.min.js"></script> -->
+        <!-- Linking ngapp.js -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+        <!-- Angular Material Library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="ngapp.js"></script>
+    </head>
+    <body ng-controller="homeController">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 md-truncate flex>Subreddit Scraper</h2>
+            </div>
+        </md-toolbar>
+        <div layout-gt-sm="row" layout="column">
+            <div flex-gt-sm="50" flex>
+                <md-content class="md-padding">
+                    <md-chips ng-model="myItems" md-autocomplete-snap="" md-require-match="true">
+                        <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in query(searchText)" md-item-text="item" placeholder="Search for subreddits">
+                            <!-- <md-item-template> -->
+                                <span md-highlight-text="searchText">{{item}}</span>
+                            <!-- </md-item-template> -->
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>{{$chip}}</span>
+                        </md-chip-template>
+                    </md-chips>
+                    <md-slider-container>
+                        <md-slider flex min="1" max="27" ng-model="color.red" aria-label="red" id="red-slider">
+                        </md-slider>
+                        <md-input-container>
+                            <input flex type="number" ng-model="color.red" aria-label="red" aria-controls="red-slider">
+                        </md-input-container>
+                    </md-slider-container>
+                    <md-input-container>
+                        <label>Category</label>
+                        <md-select ng-model="stat">
+                            <md-option value="comment_count">Comment Count</md-option>
+                            <md-option value="scores">Scores</md-option>
+                            <md-option value="title_length">Title Length</md-option>
+                            <md-option value="subscribers">Subscribers</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Backend</label>
+                        <md-select ng-model="backend">
+                            <md-option value="bst">BST</md-option>
+                            <md-option value="treap">Treap</md-option>
+                            <md-option value="rbtree">RBTree</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-button class="md-raised md-primary" ng-model="buttonClick" ng-click="submit()">Submit</md-button>
+                </md-content>
+            </div>
+            <div ng-show="buttonClick" ng-cloak>
+                <md-content class="md-padding">
+                    <md-list flex>
+                        <md-subheader class="md-no-sticky">Subreddit Statistics</md-subheader>
+                        <md-list-item class="md-3-line" ng-repeat="item in stats" ng-click="null" href="https://www.reddit.com/r/{{item.Name}}" target="_blank">
+                            <div class="md-list-item-text" layout="column">
+                                <h3>{{item.Name}}</h3>
+                                <p>Articles Extracted: {{item.Articles_Extracted}}, Mean: {{item.Mean}}, Max: {{item.Max}}, Min: {{item.Min}}, Range: {{item.Range}}</p>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+        </div>
+    </body>
+</html>
